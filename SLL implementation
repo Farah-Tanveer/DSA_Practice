@@ -1,0 +1,188 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+class SinglyLinkedList {
+private:
+    Node* head;
+    
+public:
+    SinglyLinkedList() {
+        head = NULL;
+    }
+    
+    void insertAtBeginning(int x) {
+        Node* newNode = new Node(x);
+        newNode->next = head;
+        head = newNode;
+        cout << "Inserted " << x << " at beginning\n";
+    }
+    
+    void insertAtEnd(int x) {
+        Node* newNode = new Node(x);
+        
+        if (head == NULL) {
+            head = newNode;
+            cout << "Inserted " << x << " at end (list was empty)\n";
+            return;
+        }
+        
+        Node* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        cout << "Inserted " << x << " at end\n";
+    }
+    
+    void insertAtPosition(int x, int pos) {
+        if (pos == 1) {
+            insertAtBeginning(x);
+            return;
+        }
+        
+        Node* newNode = new Node(x);
+        Node* temp = head;
+        
+        for (int i = 1; i < pos - 1 && temp != NULL; i++) {
+            temp = temp->next;
+        }
+        
+        if (temp == NULL) {
+            cout << "Position out of bounds\n";
+            return;
+        }
+        
+        newNode->next = temp->next;
+        temp->next = newNode;
+        cout << "Inserted " << x << " at position " << pos << "\n";
+    }
+    
+    void deleteAtBeginning() {
+        if (head == NULL) {
+            cout << "List is empty\n";
+            return;
+        }
+        
+        Node* temp = head;
+        head = head->next;
+        cout << "Deleted " << temp->data << " from beginning\n";
+        delete temp;
+    }
+    
+    void deleteAtEnd() {
+        if (head == NULL) {
+            cout << "List is empty\n";
+            return;
+        }
+        
+        if (head->next == NULL) {
+            cout << "Deleted " << head->data << " from end\n";
+            delete head;
+            head = NULL;
+            return;
+        }
+        
+        Node* temp = head;
+        while (temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        
+        cout << "Deleted " << temp->next->data << " from end\n";
+        delete temp->next;
+        temp->next = NULL;
+    }
+    
+    void deleteAtPosition(int pos) {
+        if (head == NULL) {
+            cout << "List is empty\n";
+            return;
+        }
+        
+        if (pos == 1) {
+            deleteAtBeginning();
+            return;
+        }
+        
+        Node* temp = head;
+        for (int i = 1; i < pos - 1 && temp != NULL; i++) {
+            temp = temp->next;
+        }
+        
+        if (temp == NULL || temp->next == NULL) {
+            cout << "Position out of bounds\n";
+            return;
+        }
+        
+        Node* nodeToDelete = temp->next;
+        cout << "Deleted " << nodeToDelete->data << " from position " << pos << "\n";
+        temp->next = nodeToDelete->next;
+        delete nodeToDelete;
+    }
+    
+    bool search(int x) {
+        Node* temp = head;
+        while (temp != NULL) {
+            if (temp->data == x) {
+                cout << "Found " << x << " in the list\n";
+                return true;
+            }
+            temp = temp->next;
+        }
+        cout << "Element " << x << " not found\n";
+        return false;
+    }
+    
+    int getLength() {
+        int count = 0;
+        Node* temp = head;
+        while (temp != NULL) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+    
+    int getAt(int pos) {
+        Node* temp = head;
+        for (int i = 1; i < pos && temp != NULL; i++) {
+            temp = temp->next;
+        }
+        
+        if (temp == NULL) {
+            cout << "Position out of bounds\n";
+            return -1;
+        }
+        
+        return temp->data;
+    }
+    
+    void display() {
+        if (head == NULL) {
+            cout << "List: [EMPTY]\n";
+            return;
+        }
+        
+        cout << "List: ";
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data;
+            if (temp->next != NULL) {
+                cout << " -> ";
+            } else {
+                cout << " -> NULL";
+            }
+            temp = temp->next;
+        }
+        cout << "\n";
+    }
+};
