@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void DFS(vector<vector<char>>& grid,
+             int row,
+             int col){
+
+        int rows = grid.size();
+        int cols = grid[0].size();
+
+        // boundaries
+        if(row < 0 || col < 0 ||
+           row >= rows || col >= cols ||
+           grid[row][col] == '0')
+            return;
+
+        // mark visited
+        grid[row][col] = '0';
+
+        DFS(grid,row+1,col);
+        DFS(grid,row-1,col);
+        DFS(grid,row,col+1);
+        DFS(grid,row,col-1);
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+
+        int count = 0;
+
+        for(int i=0;i<grid.size();i++){
+
+            for(int j=0;j<grid[0].size();j++){
+
+                if(grid[i][j] == '1'){
+
+                    count++;
+
+                    DFS(grid,i,j);
+                }
+            }
+        }
+
+        return count;
+    }
+};
